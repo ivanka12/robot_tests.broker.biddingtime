@@ -796,7 +796,7 @@ ConvToStr And Input Text
     ...      ${ARGUMENTS[2]} = cancellation_reason
     ...      ${ARGUMENTS[3]} = doc_path
     ...      ${ARGUMENTS[4]} = description
-    Go To    https://proumstrade.com.ua/lots/index
+    Click Element    id=cabinet
     Sleep   2
     Input Text    name = LotSearch[auctionID]    ${ARGUMENTS[1]}
     Click Element    name = LotSearch[name]
@@ -866,7 +866,7 @@ ConvToStr And Input Text
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
     Wait Until Page Contains Element    name = winner
     Click Element    name = winner
-    Click Element    id = confirm-protocol-btn
+    Wait Until Page Contains Element    id = confirm-payment-btn
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}
