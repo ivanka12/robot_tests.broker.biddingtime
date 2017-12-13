@@ -554,8 +554,8 @@ Login
     ${title}=    Get From Dictionary    ${ARGUMENTS[2].data}    title
     ${description}=    Get From Dictionary    ${ARGUMENTS[2].data}    description
     biddingtime.Пошук тендера по ідентифікатору    ${ARGUMENTS[0]}    ${ARGUMENTS[1]}
-    Wait Until Page Contains Element    id = tab-2
-    Click Element    id = tab-2
+    Wait Until Page Contains Element    id = tab-selector-2
+    Click Element    id = tab-selector-2
     Wait Until Page Contains Element    id= create-question-btn
     Click Element    id=create-question-btn
     Sleep    1
@@ -565,20 +565,20 @@ Login
     ${description}=    Get From Dictionary    ${ARGUMENTS[2].data}    description
 
 Задати запитання на предмет
-  [Arguments]  ${username}  ${tender_uaid}  ${item_id}  ${question}
-  biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Sleep    2
-  Click Element     id = ${item_id}item
-  Sleep  3
-  Input text          id=question-title                 ${question.data.title}
-  Input text          id=question-description          ${question.data.description}
-  Click Element     id=create-question-btn
-  Sleep  3
+    [Arguments]  ${username}  ${tender_uaid}  ${item_id}  ${question}
+    biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+    Sleep    2
+    Click Element     id = ${item_id}item
+    Sleep  3
+    Input text          id=question-title                 ${question.data.title}
+    Input text          id=question-description          ${question.data.description}
+    Click Element     id=create-question-btn
+    Sleep  3
 
 Задати запитання на тендер
-  [Arguments]  ${username}  ${tender_uaid}  ${question}
-  biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Задати питання  ${username}  ${tender_uaid}  ${question}
+    [Arguments]  ${username}  ${tender_uaid}  ${question}
+    biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+    Задати питання  ${username}  ${tender_uaid}  ${question}
 
 Отримати інформацію про questions[${index}].title
     ${index}=    inc    ${index}
@@ -639,8 +639,7 @@ Login
     sleep    2
     Click Element    id = bid-create-btn
     Sleep    2s
-    Run Keyword If    ${bid['data'].qualified} != ${False}    Click Element    id=cabinet
-    Click Element   id=bids-oferta
+    Run Keyword If    ${bid['data'].qualified} != ${False}    Click Element    id=bids-oferta
     ${amount}=    Convert To String    ${bid.data.value.amount}
     Input Text    id=bids-value_amount    ${amount}
     Sleep    2
