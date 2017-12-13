@@ -866,7 +866,7 @@ ConvToStr And Input Text
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
     Wait Until Page Contains Element    name = winner
     Click Element    name = winner
-    Click Element    id = confirm-protocol-btn
+    Wait Until Page Contains Element    id = confirm-payment-btn
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}
