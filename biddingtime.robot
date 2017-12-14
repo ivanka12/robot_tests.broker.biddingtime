@@ -234,6 +234,7 @@ Login
     Sleep    1
     Click Element    id=lot-document-upload-btn
     Wait Until Element Is Visible  id = lots-vdr
+    Go to    ${USERS.users['${ARGUMENTS[0]}'].default_page}
 
 Завантажити документ в тендер з типом
     [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${doc_type}
@@ -244,7 +245,9 @@ Login
     Choose File    id = file-type-input    ${filepath}
     Sleep    1
     Click Element    id=lot-document-upload-btn
+    Sleep    10
     Wait Until Element Is Visible  id = lots-vdr
+    Go to    ${USERS.users['${username}'].default_page}
 
 Завантажити ілюстрацію
     [Arguments]  ${username}  ${tender_uaid}  ${filepath}
@@ -256,6 +259,7 @@ Login
     Sleep    1
     Click Element    id=lot-document-upload-btn
     Wait Until Element Is Visible  id = lots-vdr
+    Go to    ${USERS.users['${username}'].default_page}
 
 Додати Virtual Data Room
     [Arguments]  ${username}  ${tender_uaid}  ${vdr_url}
@@ -287,10 +291,10 @@ Login
     [Arguments]    ${username}  ${tender_uaid}
     Switch Browser    ${BROWSER_ALIAS}
     Go to    ${USERS.users['${username}'].default_page}
-    Wait Until Page Contains Element    name = Auctions[auctionID]
-    Input Text    name = Auctions[auctionID]    ${tender_uaid}
+    Wait Until Page Contains Element    name=Auctions[auctionID]
+    Input Text    name=Auctions[auctionID]    ${tender_uaid}
     Sleep    1
-    Click Element    name = Auctions[title]
+    Click Element    id=submit-search
     Sleep    1
     Wait Until Page Contains Element    id=auction-view-btn
     Click Element    id=auction-view-btn
