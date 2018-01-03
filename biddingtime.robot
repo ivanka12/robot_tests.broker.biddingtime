@@ -2,7 +2,7 @@
 Library           String
 Library           Selenium2Library
 Library           Collections
-Library           uisce_service.py
+Library           biddingtime_service.py
 
 *** Variables ***
 ${locator.edit.description}    id = lots-description
@@ -99,7 +99,7 @@ ${locator.awards[1].status}    id = awards[1].status
     Open Browser    ${USERS.users['${username}'].homepage}    ${USERS.users['${username}'].browser}    alias=${BROWSER_ALIAS}
     Set Window Size    @{USERS.users['${username}'].size}
     Set Window Position    @{USERS.users['${username}'].position}
-    Run Keyword If    '${username}' != 'uisce_Viewer'    Login    ${username}
+    Run Keyword If    '${username}' != 'biddingtime_Viewer'    Login    ${username}
 
 Підготувати дані для оголошення тендера
     [Arguments]    ${username}    ${tender_data}    ${role_name}
@@ -348,7 +348,7 @@ Login
 
 Отримати інформацію про dgfDecisionDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    dgfDecisionDate
-    ${return_value}=    uisce_service.convert_date    ${date_value}
+    ${return_value}=    biddingtime_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про tenderAttempts
@@ -506,7 +506,7 @@ Login
 
 Отримати інформацію про items[0].deliveryDate.endDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    items[0].deliveryDate.endDate
-    ${return_value}=    uisce_service.convert_date    ${date_value}
+    ${return_value}=    biddingtime_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про auction[0].status
@@ -517,34 +517,32 @@ Login
     ${return_value}=     Отримати текст із поля і показати на сторінці    auction[1].status
     [Return]    ${return_value}
 
-Задати питання на тендер
+Задати запитання на тендер
     [Arguments]    @{ARGUMENTS}
     [Documentation]    ${ARGUMENTS[0]} == username
     ...    ${ARGUMENTS[1]} == tenderUaId
     ...    ${ARGUMENTS[2]} == questionId
     ${title}=    Get From Dictionary    ${ARGUMENTS[2].data}    title
     ${description}=    Get From Dictionary    ${ARGUMENTS[2].data}    description
-    biddingtime.Пошук тендера по ідентифікатору    ${ARGUMENTS[0]}    ${ARGUMENTS[1]} == tenderUaId
-    Wait Until Page Contains Element    id = auction-view-btn
-    Click Element    id = auction-view-btn
-    Click Element    id = tab-2
+    biddingtime.Пошук тендера по ідентифікатору    ${ARGUMENTS[0]}    ${ARGUMENTS[1]}
+    Click Element    id = tab-selector-2
     Wait Until Page Contains Element    id= create-question-btn
     Click Element    id=create-question-btn
     Sleep    1
     Input text    id=question-title    ${title}
     Input text    id=question-description    ${description}
-    Click Element    id= create-question-btn
+    Click Element    id= submit-question-btn
     ${description}=    Get From Dictionary    ${ARGUMENTS[2].data}    description
 
 Задати запитання на предмет
   [Arguments]  ${username}  ${tender_uaid}  ${item_id}  ${question}
   biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Sleep    2
-  Click Element     id = question[${item_id}].item
+  Click Element     id = ${item_id}item
   Sleep  3
   Input text          id=question-title                 ${question.data.title}
   Input text          id=question-description          ${question.data.description}
-  Click Element     id=create-question-btn
+  Click Element     id=submit-question-btn
   Sleep  3
 
 Отримати інформацію про questions[${index}].title
@@ -588,7 +586,6 @@ Login
 Перейти до сторінки запитань
     [Arguments]    ${username}    ${tender_uaid}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Sleep    10
     Click Element    id = tab-selector-2
 
 Отримати інформацію із запитання
@@ -606,11 +603,14 @@ Login
     sleep    2
     Click Element    id = bid-create-btn
     Sleep    2s
-    Click Element    id = bids-oferta
+    Run Keyword If    ${bid['data'].qualified} != ${False}    Click Element    id=bids-oferta
+    ${amount}=    Convert To String    ${bid.data.value.amount}
+    Input Text    id=bids-value_amount    ${amount}
+    Sleep    2
     Click Element    id = bid-save-btn
-    Sleep    10
     Click Element    id = bid-activate-btn
     sleep    2
+    Reload Page
 
 ConvToStr And Input Text
     [Arguments]  ${elem_locator}  ${smth_to_input}
@@ -647,9 +647,11 @@ ConvToStr And Input Text
     Sleep    2
     Click Element    id = bid-save-btn
     sleep    2
+    Reload Page
 
 Завантажити фінансову ліцензію
     [Arguments]  ${username}    ${tender_uaid}    ${path}
+    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     Sleep    1s
     Click Element    id = bid-create-btn
     Sleep    2s
@@ -761,7 +763,7 @@ ConvToStr And Input Text
     ...      ${ARGUMENTS[2]} = cancellation_reason
     ...      ${ARGUMENTS[3]} = doc_path
     ...      ${ARGUMENTS[4]} = description
-    Click Element    id = cabinet
+    Go To    https://proumstrade.com.ua/lots/index
     Sleep   2
     Input Text    name = LotSearch[auctionID]    ${ARGUMENTS[1]}
     Click Element    name = LotSearch[name]
