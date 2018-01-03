@@ -15,9 +15,6 @@ def is_checked(locator):
    driver = get_webdriver()
    return driver.find_element_by_id(locator).is_selected()
 
-def get_str(value):
-   return str(value)
-
 def get_budget(initial_tender_data):
    return str(initial_tender_data.data.value.amount)
 
@@ -63,9 +60,6 @@ def download_file(url, file_name, output_dir):
 
 def inc(value):
    return int(value) + 1
-
-def to_str(value):
-   return str(value)
 
 def to_int(value):
    return int(value)
