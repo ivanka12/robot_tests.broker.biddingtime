@@ -470,7 +470,7 @@ Login
     [Return]    ${return_value}
 
 Отримати інформацію про tenderPeriod.endDate
-    ${date_value}=    Get Text    auction-tenderPeriod_endDate
+    ${date_value}=    Get Text    id = auction-tenderPeriod_endDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
@@ -576,7 +576,9 @@ Login
 
 Відповісти на запитання
     [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}
-    biddingtime.Перейти до сторінки запитань    ${username}  ${tender_uaid}
+    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Click Element    id = tab-selector-2
+    Sleep    2
     Click Element    id = question[${question_id}].answer
     Sleep    3
     Input Text    id=questions-answer    ${answer_data.data.answer}
@@ -609,13 +611,8 @@ Login
     Sleep    2
     Click Element    id = bid-save-btn
     Click Element    id = bid-activate-btn
-    sleep    2
+    sleep    10
     Reload Page
-
-ConvToStr And Input Text
-    [Arguments]  ${elem_locator}  ${smth_to_input}
-    ${smth_to_input}=  Convert To String  ${smth_to_input}
-    Input Text  ${elem_locator}  ${smth_to_input}
 
 Скасувати цінову пропозицію
     [Arguments]    @{ARGUMENTS}
@@ -627,7 +624,7 @@ ConvToStr And Input Text
 Отримати інформацію із пропозиції
     [Arguments]    ${username}    ${tender_uaid}    ${field}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Click Element    id =bids[0].link
+    Click Element    id =bid-create-btn
     Wait Until Page Contains Element    id=bids-value_amount
     ${value}=    Get Value    id=bids-value_amount
     ${value}=    Convert To Number    ${value}
@@ -646,7 +643,7 @@ ConvToStr And Input Text
     Input Text    id=bids-value_amount    ${value}
     Sleep    2
     Click Element    id = bid-save-btn
-    sleep    2
+    sleep    10
     Reload Page
 
 Завантажити фінансову ліцензію
@@ -658,6 +655,8 @@ ConvToStr And Input Text
     Select From List By Value    id = files-type    financialLicense
     Choose File    id = files-file    ${path}
     Click Element    id = document-upload-btn
+    Sleep    5
+    Reload Page
 
 Змінити документ в ставці
     [Arguments]    @{ARGUMENTS}
