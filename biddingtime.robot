@@ -22,6 +22,7 @@ ${locator.value-amount}    id = auction_value_amount
 ${locator.value-valueAddedTaxIncluded}    id=auction-valueAddedTaxIncluded
 ${locator.value.currency}    id=value-currency
 ${locator.auctionPeriod.startDate}    id = auction-auctionPeriod_startDate
+${locator.auctionPeriod.endDate}    id = auction-auctionPeriod_endDate
 ${locator.enquiryPeriod.startDate}    id = auction-enquiryPeriod_startDate
 ${locator.enquiryPeriod.endDate}    id = auction-enquiryPeriod_endDate
 ${locator.tenderPeriod.startDate}    id = auction-tenderPeriod_startDate
@@ -353,7 +354,7 @@ Login
 
 Отримати інформацію про tenderAttempts
     ${data}=    Отримати текст із поля і показати на сторінці    tenderAttempts
-    ${return_value}=    to_int    ${data}
+    ${return_value}=    Convert To Number    ${data}
     [Return]    ${return_value}
 
 Отримати інформацію про tender.data.auctionUrl
@@ -455,17 +456,17 @@ Login
     [Return]    ${return_value}
 
 Отримати інформацію про auctionPeriod.startDate
-    ${date_value}=    Get Text    auction-auctionPeriod_startDate
+    ${date_value}=    Get Text    id = auction-auctionPeriod_startDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про auctionPeriod.endDate
-    ${date_value}=    Get Text    auction-auctionPeriod_endDate
+    ${date_value}=    Get Text    id = auction-auctionPeriod_endDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про tenderPeriod.startDate
-    ${date_value}=    Get Text    auction-tenderPeriod_startDate
+    ${date_value}=    Get Text    id = auction-tenderPeriod_startDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
@@ -475,12 +476,12 @@ Login
     [Return]    ${return_value}
 
 Отримати інформацію про enquiryPeriod.startDate
-    ${date_value}=    Get Text    auction-enquiryPeriod_startDate
+    ${date_value}=    Get Text    id = auction-enquiryPeriod_startDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про enquiryPeriod.endDate
-    ${date_value}=    Get Text    auction-enquiryPeriod_endDate
+    ${date_value}=    Get Text    id = auction-enquiryPeriod_endDate
     ${return_value}=    convert_date_to_iso    ${date_value}
     [Return]    ${return_value}
 
@@ -602,12 +603,12 @@ Login
 Подати цінову пропозицію
     [Arguments]  ${username}  ${tender_uaid}  ${bid}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    ${amount}=    bid_value    ${bid}    
     sleep    2
     Click Element    id = bid-create-btn
     Sleep    2s
     Run Keyword If    ${bid['data'].qualified} != ${False}    Click Element    id=bids-oferta
-    ${amount}=    Convert To String    ${bid.data.value.amount}
-    Input Text    id=bids-value_amount    ${amount}
+    Run Keyword If    '${amount}' != ''   Input Text    id=bids-value_amount    ${amount}
     Sleep    2
     Click Element    id = bid-save-btn
     Click Element    id = bid-activate-btn
@@ -762,7 +763,7 @@ Login
     ...      ${ARGUMENTS[2]} = cancellation_reason
     ...      ${ARGUMENTS[3]} = doc_path
     ...      ${ARGUMENTS[4]} = description
-    Click Element    id = cabinet
+    Click element    id = cabinet
     Sleep   2
     Input Text    name = LotSearch[auctionID]    ${ARGUMENTS[1]}
     Click Element    name = LotSearch[name]
@@ -818,29 +819,29 @@ Login
 Завантажити угоду до тендера
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${filepath}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Wait Until Page Contains Element    name = winner
-    Click Element    name = winner
+    Wait Until Page Contains Element    id = bids[0].link
+    Click Element    id = bids[0].link
     Wait Until Page Contains Element    id = upload-contract-link
     Click Element    id = upload-contract-link
     Choose File    id = files-file    ${filepath}
     Sleep    1
     Click Element    id = upload-contract-btn
-    Reload Page
+    Sleep    10
 
 Підтвердити наявність протоколу аукціону
     [Arguments]  ${username}  ${tender_uaid}  ${award_index}
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
-    Wait Until Page Contains Element    name = winner
-    Click Element    name = winner
-    Click Element    id = confirm-protocol-btn
+    Wait Until Page Contains Element    id=bids[0].link
+    Click Element    id=bids[0].link
+    Wait Until Page Contains Element    id = confirm-payment-btn
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}
     ${file_path}    ${file_title}    ${file_content}=    create_fake_doc
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
     Sleep    1
-    Wait Until Page Contains Element    name = winner
-    Click Element    name = winner
+    Wait Until Page Contains Element    id = bids[0].link
+    Click Element    id = bids[0].link
     Wait Until Page Contains Element    id = contract-signed-btn
     Click Element    id = contract-signed-btn
     Click Element    id = contract-signed-submit

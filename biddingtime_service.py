@@ -72,3 +72,8 @@ def to_int(value):
 
 def get_upload_file_path():
    return os.path.join(os.getcwd(), 'src', 'robot_tests.broker.biddingtime', 'test.txt')
+
+def bid_value(tender_data):
+    if 'value' in tender_data['data']:
+        return  str(tender_data['data']['value']['amount'])
+    return ''
