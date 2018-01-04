@@ -626,7 +626,7 @@ Login
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     Click Element    id =bid-create-btn
     Wait Until Page Contains Element    id=bids-value_amount
-    ${value}=    Get Value    id=bids-value_amount
+    ${value}=    Get Text    id=bids-value_amount
     ${value}=    Convert To Number    ${value}
     [Return]    ${value}
 
@@ -762,7 +762,7 @@ Login
     ...      ${ARGUMENTS[2]} = cancellation_reason
     ...      ${ARGUMENTS[3]} = doc_path
     ...      ${ARGUMENTS[4]} = description
-    Go To    https://proumstrade.com.ua/lots/index
+    Click Element    id = cabinet
     Sleep   2
     Input Text    name = LotSearch[auctionID]    ${ARGUMENTS[1]}
     Click Element    name = LotSearch[name]
