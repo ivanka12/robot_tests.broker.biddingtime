@@ -261,7 +261,7 @@ Login
     biddingtime.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
     Click Element    id=lot-update-btn
     Wait Until Page Contains Element    id = lots-passport    20
-    Input text    id = lots-passport    ${accessDetails} 
+    Input text    id = lots-passport    ${accessDetails}
     Click Element    id=submit-auction-btn
     Reload Page
 
@@ -299,7 +299,6 @@ Login
     [Arguments]    @{ARGUMENTS}
     [Documentation]    ${ARGUMENTS[0]} = username
     ...    ${ARGUMENTS[1]} = ${TENDER_UAID}
-    Switch Browser    ${BROWSER_ALIAS}
     biddingtime.Пошук тендера по ідентифікатору    ${ARGUMENTS[0]}    ${ARGUMENTS[1]}
 
 Отримати інформацію із предмету
@@ -317,13 +316,17 @@ Login
     ${number_of_items}=  Get Matching Xpath Count  //div[@class="item"]
     [return]  ${number_of_items}
 
+Перейти на сторінку тендера
+    [Arguments]  ${username}  ${tender_uaid}
+    ${present}=  Run Keyword And Return Status  Element Should Be Visible  id = auction-status
+    Run Keyword Unless  ${present}  biddingtime.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+
 Отримати інформацію із тендера
-    [Arguments]    @{ARGUMENTS}
-    [Documentation]    ${ARGUMENTS[0]} == username
-    ...    ${ARGUMENTS[1]} == tender_uaid
-    ...    ${ARGUMENTS[2]} == fieldname
-    ${return_value}=    Run Keyword    Отримати інформацію про ${ARGUMENTS[2]}
-    [Return]    ${return_value}
+    [Arguments]  ${username}  ${tender_uaid}  ${fieldname}
+    Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
+    ...  Перейти на сторінку тендера  ${username}  ${tender_uaid}
+    ${return_value}=  Run Keyword  Отримати інформацію про ${fieldname}
+    [return]  ${return_value}
 
 Отримати текст із поля і показати на сторінці
     [Arguments]    ${fieldname}
@@ -353,9 +356,9 @@ Login
     [Return]    ${return_value}
 
 Отримати інформацію про tenderAttempts
-    ${data}=    Отримати текст із поля і показати на сторінці    tenderAttempts
-    ${return_value}=    Convert To Number    ${data}
-    [Return]    ${return_value}
+    ${return_value}=  Отримати текст із поля і показати на сторінці  tenderAttempts
+    ${return_value}=  Convert To Integer  ${return_value}
+    [return]  ${return_value}
 
 Отримати інформацію про tender.data.auctionUrl
     ${return_value}=    Отримати текст із поля і показати на сторінці    tender.data.auctionUrl
@@ -603,7 +606,7 @@ Login
 Подати цінову пропозицію
     [Arguments]  ${username}  ${tender_uaid}  ${bid}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    ${amount}=    bid_value    ${bid}    
+    ${amount}=    bid_value    ${bid}
     sleep    2
     Click Element    id = bid-create-btn
     Sleep    2s
@@ -819,8 +822,8 @@ Login
 Завантажити угоду до тендера
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${filepath}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Wait Until Page Contains Element    id = bids[0].link
-    Click Element    id = bids[0].link
+    Wait Until Page Contains Element    id = bids[1].link
+    Click Element    id = bids[1].link
     Wait Until Page Contains Element    id = upload-contract-link
     Click Element    id = upload-contract-link
     Choose File    id = files-file    ${filepath}
@@ -831,8 +834,8 @@ Login
 Підтвердити наявність протоколу аукціону
     [Arguments]  ${username}  ${tender_uaid}  ${award_index}
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
-    Wait Until Page Contains Element    id=bids[0].link
-    Click Element    id=bids[0].link
+    Wait Until Page Contains Element    id=bids[${award_index}].link
+    Click Element    id=bids[${award_index}].link
     Wait Until Page Contains Element    id = confirm-payment-btn
 
 Підтвердити підписання контракту
@@ -840,8 +843,8 @@ Login
     ${file_path}    ${file_title}    ${file_content}=    create_fake_doc
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
     Sleep    1
-    Wait Until Page Contains Element    id = bids[0].link
-    Click Element    id = bids[0].link
+    Wait Until Page Contains Element    id = bids[1].link
+    Click Element    id = bids[1].link
     Wait Until Page Contains Element    id = contract-signed-btn
     Click Element    id = contract-signed-btn
     Click Element    id = contract-signed-submit
