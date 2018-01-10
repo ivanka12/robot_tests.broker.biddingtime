@@ -822,8 +822,8 @@ Login
 Завантажити угоду до тендера
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${filepath}
     biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Wait Until Page Contains Element    id = bids[1].link
-    Click Element    id = bids[1].link
+    Wait Until Page Contains Element    xpath=(//a[contains(@name, 'winner')])
+    Click Element    xpath=(//a[contains(@name, 'winner')])
     Wait Until Page Contains Element    id = upload-contract-link
     Click Element    id = upload-contract-link
     Choose File    id = files-file    ${filepath}
@@ -843,8 +843,8 @@ Login
     ${file_path}    ${file_title}    ${file_content}=    create_fake_doc
     biddingtime.Пошук тендера по ідентифікатору    ${username}  ${tender_uaid}
     Sleep    1
-    Wait Until Page Contains Element    id = bids[1].link
-    Click Element    id = bids[1].link
+    Wait Until Page Contains Element    xpath=(//a[contains(@name, 'winner')])
+    Click Element    xpath=(//a[contains(@name, 'winner')])
     Wait Until Page Contains Element    id = contract-signed-btn
     Click Element    id = contract-signed-btn
     Click Element    id = contract-signed-submit
