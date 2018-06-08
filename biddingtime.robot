@@ -117,6 +117,21 @@ Login
     Run keyword    biddingtime.Оновити сторінку з об'єктом МП    ${username}    ${assetID}
     [Return]    ${assetID}
 
+Створити лот
+    [Arguments]    ${username}    ${tender_data}    ${asset_uaid}
+    ${decisionDate}=    Get from dictionary    ${tender_data.data.decisions[0]}    decisionDate
+    ${decisionID}=    Get from dictionary    ${tender_data.data.decisions[0]}    decisionID
+    Click element    id=cabinet
+    Click element    id=lot
+    Click element    id=create-lot-btn
+    Input text    id=lots-assetid    ${asset_uaid}
+    Input text    id=decisions-decisiondate    ${decisionDate}
+    Input text    id=decisions-decisionid    ${decisionID}
+    Click element    id=save-btn
+    Click element    id=activate-btn
+    ${lotId}=    Get text    id=lots-lotid
+    [Return]    ${lotId}
+
 Додати предмет
     [Arguments]    ${item}
     ${quantity}=    Convert to string    ${item.quantity}
@@ -338,9 +353,14 @@ Login
 Отримати документ
     [Arguments]    ${username}    ${tender_uaid}    ${doc_id}
     Run keyword    biddingtime.Оновити сторінку з об'єктом МП    ${username}    ${tender_uaid}
-    ${file_name}    Get Text    xpath=//*[contains(text(),'${doc_id}')]
+    ${file_name}    Get Element Attribute    xpath=//*[contains(text(),'${doc_id}')]@name
     ${url}    Get Element Attribute    xpath=//*[contains(text(),'${doc_id}')]@href
-    ${title}    Get element attribute    xpath=//*[contains(text(),'${doc_id}')]@title
     ${file_name}=    ${file_name.split('/')[-1]}
+    Log to console    ${file_name}
+    Log to console    ${doc_id}
     download_file    ${url}    ${file_name}    ${OUTPUT_DIR}
-    [Return]    ${title}
+    [Return]    ${file_name}
+
+Додати умови проведення аукціону
+    [Arguments]    ${username}    ${auction}    ${auction_index}    ${tender_uaid}
+    Log to console    @{ARGUMENTS}
