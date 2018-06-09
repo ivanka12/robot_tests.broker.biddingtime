@@ -160,6 +160,18 @@ Login
     Click element    //input[@name="AssetsSearch[title]"]
     Click element    id=asset-view
 
+Оновити сторінку з лотом
+    [Arguments]    ${username}    ${tender_uaid}
+    Click element    id=publications
+    Click element    id=lots-list
+    Input text    //input[@name="LotsSearch[lotID]"]    ${tender_uaid}
+    Click element    //input[@name="LotsSearch[title]"]
+    Click element    id=lot-view
+
+Пошук лоту по ідентифікатору
+    [Arguments]    ${username}    ${tender_uaid}
+    Run keyword    biddingtime.Оновити сторінку з лотом    ${username}    ${tender_uaid}
+
 Пошук об’єкта МП по ідентифікатору
     [Arguments]    ${username}    ${tender_uaid}
     Run keyword    biddingtime.Оновити сторінку з об'єктом МП    ${username}    ${tender_uaid}
@@ -353,14 +365,66 @@ Login
 Отримати документ
     [Arguments]    ${username}    ${tender_uaid}    ${doc_id}
     Run keyword    biddingtime.Оновити сторінку з об'єктом МП    ${username}    ${tender_uaid}
-    ${file_name}    Get Element Attribute    xpath=//*[contains(text(),'${doc_id}')]@name
+    ${file_name}    Get Text    xpath=//*[contains(text(),'${doc_id}')]
     ${url}    Get Element Attribute    xpath=//*[contains(text(),'${doc_id}')]@href
-    ${file_name}=    ${file_name.split('/')[-1]}
-    Log to console    ${file_name}
-    Log to console    ${doc_id}
-    download_file    ${url}    ${file_name}    ${OUTPUT_DIR}
-    [Return]    ${file_name}
+    download_file    ${url}    ${file_name.split('/')[-1]}    ${OUTPUT_DIR}
+    [Return]    ${file_name.split('/')[-1]}
 
 Додати умови проведення аукціону
-    [Arguments]    ${username}    ${auction}    ${auction_index}    ${tender_uaid}
-    Log to console    @{ARGUMENTS}
+  [Arguments]  ${username}  ${auction}  ${index}  ${tender_uaid}
+  Run KeyWord  biddingtime.Додати умови проведення аукціону номер ${index}  ${username}  ${tender_uaid}  ${auction}
+
+Додати умови проведення аукціону номер 0
+  [Arguments]  ${username}  ${tender_uaid}  ${auction}
+  biddingtime.Оновити сторінку з лотом    ${username}  ${tender_uaid}
+  Click Element    id=auction-0-update-btn
+  Input Text  id=lotauctions-auctionperiod_startdate    ${auction.auctionPeriod.startDate}
+  ${value_amount}=    Convert To String    ${auction.value.amount}
+  Input Text    id=lotauctions-value_amount    ${value_amount}
+  ${value_valueaddedtaxincluded}=    Convert To String    ${auction.value.valueAddedTaxIncluded}
+  Run Keyword If    ${value_valueaddedtaxincluded} == True    Select Checkbox  id=lotauctions-minimalstep_valueaddedtaxincluded
+  Run Keyword If    ${value_valueaddedtaxincluded} == True    Select Checkbox  id=lotauctions-value_valueaddedtaxincluded
+  ${minimalStep}=    Convert To String    ${auction.minimalStep.amount}
+  Input Text    id=lotauctions-minimalstep_amount    ${minimalStep}
+  ${guarantee_amount}=    Convert To String    ${auction.guarantee.amount}
+  Input Text    id=lotauctions-guarantee_amount    ${guarantee_amount}
+  ${registrationFee}=  Convert To String    ${auction.registrationFee.amount}
+  Input Text    id=lotauctions-registrationfee_amount    ${registrationFee}
+  Click element    id=save-btn
+
+Додати умови проведення аукціону номер 1
+  [Arguments]  ${username}  ${tender_uaid}  ${auction}
+  Run keyword    biddingtime.Оновити сторінку з лотом    ${username}  ${tender_uaid}
+  Click Element    id=auction-1-update-btn
+  Input text    id=lotauctions-tenderingduration    ${auction.tenderingDuration}
+  Click element    id=save-btn
+  Click element    id=verification-btn
+
+Отримати інформацію із лоту
+    [Arguments]    ${tender_uaid}    ${field_name}
+    Run keyword    biddingtime.Отримати інформацію про ${field_name} лоту    ${tender_uaid}
+
+Отримати інформацію про status лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-status
+    [Return]    ${return_value}
+
+Отримати інформацію про lotID лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-lotid
+    [Return]    ${return_value}
+
+Отримати інформацію про date лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-date
+    [Return]    ${return_value}
+
+Отримати інформацію про rectificationPeriod.endDate лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-rectificationperiod_enddate
+    [Return]    ${return_value}
+
+Отримати інформацію про assets лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-assetid
+    [Return]    ${return_value}
