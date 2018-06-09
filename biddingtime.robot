@@ -63,6 +63,7 @@ Login
     ${items}=    Get From Dictionary    ${tender_data.data}    items
     ${items_length}=    Get Length      ${items}
 
+    Click element    id=cabinet
     Click element    id=profile
     Click element    id=edit-profile-btn
     Input text    id=profile-firma_full    ${tender_data.data.assetCustodian.identifier.legalName}
@@ -74,7 +75,6 @@ Login
 
     Wait Until Page Contains Element    id = cabinet
 
-    Click element    id = cabinet
     Click element    id = asset
     Click element    id = create-asset-btn
 
@@ -129,7 +129,7 @@ Login
     Input text    id=decisions-decisionid    ${decisionID}
     Click element    id=save-btn
     Click element    id=activate-btn
-    ${lotId}=    Get text    id=lots-lotid
+    ${lotId}=    Get text    id=lotID
     [Return]    ${lotId}
 
 Додати предмет
@@ -401,7 +401,7 @@ Login
   Click element    id=verification-btn
 
 Отримати інформацію із лоту
-    [Arguments]    ${tender_uaid}    ${field_name}
+    [Arguments]    ${username}    ${tender_uaid}    ${field_name}
     Run keyword    biddingtime.Отримати інформацію про ${field_name} лоту    ${tender_uaid}
 
 Отримати інформацію про status лоту
@@ -427,4 +427,99 @@ Login
 Отримати інформацію про assets лоту
     [Arguments]    ${tender_uaid}
     ${return_value}=    Get text    id=lots-assetid
+    [Return]    ${return_value}
+
+Отримати інформацію про title лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-title
+    [Return]    ${return_value}
+
+Отримати інформацію про title_ru лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-title_ru
+    [Return]    ${return_value}
+
+Отримати інформацію про title_en лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-title_en
+    [Return]    ${return_value}
+
+Отримати інформацію про description лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=lots-description
+    [Return]    ${return_value}
+
+Отримати інформацію про lotHolder.name лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=organizations-name
+    [Return]    ${return_value}
+
+Отримати інформацію про lotHolder.identifier.scheme лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=organizations-identifier_scheme
+    [Return]    ${return_value}
+
+Отримати інформацію про lotHolder.identifier.id лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=organizations-identifier_id
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.identifier.scheme лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-identifier_scheme
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.identifier.id лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-identifier_id
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.identifier.legalName лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-identifier_legalName
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.contactPoint.name лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-contactpoint_name
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.contactPoint.telephone лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-contactpoint_telephone
+    [Return]    ${return_value}
+
+Отримати інформацію про lotCustodian.contactPoint.email лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=custodian-contactpoint_email
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[0].decisionDate лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-0-decisionDate
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[0].decisionID лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-0-decisionID
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[0].title лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-0-title
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[1].decisionDate лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-1-decisionDate
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[1].decisionID лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-1-decisionID
+    [Return]    ${return_value}
+
+Отримати інформацію про decisions[1].title лоту
+    [Arguments]    ${tender_uaid}
+    ${return_value}=    Get text    id=decisions-1-title
     [Return]    ${return_value}
