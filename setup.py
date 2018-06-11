@@ -1,6 +1,6 @@
 from setuptools import setup
 
-broker_name = 'sets'
+broker_name = 'biddingtime'
 pkg_name = 'robot_tests.broker.{}'.format(broker_name)
 description = '{} broker for OpenProcurement Robot tests'.format(broker_name)
 
