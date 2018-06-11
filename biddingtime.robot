@@ -103,7 +103,6 @@ Login
     Input text    id=organizations-contactpoint_telephone    ${assetHolder_ContactPoint_telephone}
     Input text    id=organizations-contactpoint_uri    ${assetHolder_ContactPoint_url}
 
-    Input text    id=organizations-address_countryname    ${assetHolder_address_countryName}
     Input text    id=organizations-address_locality    ${assetHolder_address_locality}
     Input text    id=organizations-address_postalcode    ${assetHolder_address_postalCode}
     Input text    id=organizations-address_region    ${assetHolder_address_region}
@@ -129,13 +128,12 @@ Login
     Input text    id=decisions-decisionid    ${decisionID}
     Click element    id=save-btn
     Click element    id=activate-btn
-    ${lotId}=    Get text    id=lotID
-    [Return]    ${lotId}
+    ${tender_uaid}=    Get text    id=lotID
+    [Return]    ${tender_uaid}
 
 Додати предмет
     [Arguments]    ${item}
     ${quantity}=    Convert to string    ${item.quantity}
-
     Click element    id = create-item-btn
     Input text    id = items-description    ${item.description}
     Input text    id = items-description_ru    ${item.description_ru}
@@ -143,7 +141,6 @@ Login
     Input text    id = items-quantity    ${quantity}
     Select from list by value    id = items-unit_code    ${item.unit.code}
     Select from list by value    id = items-additionalclassifications    ${item.additionalClassifications[0].id}
-    Input text    id = items-address_countryname    ${item.address.countryName}
     Input text    id = items-address_locality    ${item.address.locality}
     Input text    id = items-address_postalcode    ${item.address.postalCode}
     Select from list by value    id = items-address_region    ${item.address.region}
@@ -178,7 +175,6 @@ Login
 
 Отримати інформацію із об'єкта МП
     [Arguments]    ${username}    ${tender_uaid}    ${field_name}
-    # Run keyword    biddingtime.Пошук об’єкта МП по ідентифікатору    ${username}    ${tender_uaid}
     ${return_value}=    Run Keyword    biddingtime.Отримати інформацію про ${field_name}
     [Return]    ${return_value}
 
@@ -271,37 +267,70 @@ Login
     ${return_value}=    Get text    id='${item_id}-${field_name}'
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].description
-    ${return_value}=    Get text    id=items-0-description
+Отримати інформацію про items[${index}].description
+    ${return_value}=    Get text    id=items-${index}-description
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].description_ru
-    ${return_value}=    Get text    id=items-0-description_ru
+Отримати інформацію про items[${index}].description_ru
+    ${return_value}=    Get text    id=items-${index}-description_ru
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].description_en
-    ${return_value}=    Get text    id=items-0-description_en
+Отримати інформацію про items[${index}].description_en
+    ${return_value}=    Get text    id=items-${index}-description_en
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].classification.scheme
-    ${return_value}=    Get text    id=items-0-classification_scheme
+Отримати інформацію про items[${index}].classification.scheme
+    ${return_value}=    Get text    id=items-${index}-classification_scheme
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].classification.id
-    ${return_value}=    Get text    id=items-0-classification_id
+Отримати інформацію про items[${index}].classification.id
+    ${return_value}=    Get text    id=items-${index}-classification_id
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].unit.name
-    ${return_value}=    Get text    id=items-0-unit_name
+Отримати інформацію про items[${index}].unit.name
+    ${return_value}=    Get text    id=items-${index}-unit_name
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].quantity
-    ${return_value}=    Get text    id=items-0-quantity
+Отримати інформацію про items[${index}].quantity
+    ${return_value}=    Get text    id=items-${index}-quantity
     ${return_value}=    Convert to number    ${return_value}
     [Return]    ${return_value}
 
-Отримати інформацію про items[0].registrationDetails.status
-    ${return_value}=    Get text    id=items-0-status
+Отримати інформацію про items[${index}].registrationDetails.status
+    ${return_value}=    Get text    id=items-${index}-status
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].description
+    ${return_value}=    Get text    id=items-${index}-description
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].description_ru
+    ${return_value}=    Get text    id=items-${index}-description_ru
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].description_en
+    ${return_value}=    Get text    id=items-${index}-description_en
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].classification.scheme
+    ${return_value}=    Get text    id=items-${index}-classification_scheme
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].classification.id
+    ${return_value}=    Get text    id=items-${index}-classification_id
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].unit.name
+    ${return_value}=    Get text    id=items-${index}-unit_name
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].quantity
+    ${return_value}=    Get text    id=items-${index}-quantity
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про items[${index}].registrationDetails.status
+    ${return_value}=    Get text    id=items-${index}-status
     [Return]    ${return_value}
 
 Завантажити ілюстрацію в об'єкт МП
@@ -313,6 +342,15 @@ Login
     Click element    id=upload-btn
     Wait until page contains element    id=assetID
 
+Завантажити ілюстрацію в лот
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}
+    Run keyword    biddingtime.Пошук лоту по ідентифікатору    ${username}    ${tender_uaid}
+    Click element    id=lot-upload-btn
+    Select from list by value    id=files-type    illustration
+    Choose file    id=files-file    ${filepath}
+    Click element    id=upload-btn
+    Wait until page contains element    id=lotID
+
 Завантажити документ в об'єкт МП з типом
     [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${documentType}
     Run keyword    biddingtime.Пошук об’єкта МП по ідентифікатору    ${username}    ${tender_uaid}
@@ -322,9 +360,97 @@ Login
     Click element    id=upload-btn
     Wait until page contains element    id=assetID
 
+Завантажити документ в лот з типом
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${documentType}
+    Run keyword    biddingtime.Пошук лоту по ідентифікатору    ${username}    ${tender_uaid}
+    Click element    id=lot-upload-btn
+    Select from list by value    id=files-type    ${documentType}
+    Choose file    id=files-file    ${filepath}
+    Click element    id=upload-btn
+    Wait until page contains element    id=lotID
+
+Завантажити документ в умови проведення аукціону
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${documentType}    ${auction_index}
+    Run keyword    biddingtime.Завантажити документ в лот з типом    ${username}    ${tender_uaid}    ${filepath}    ${documentType}
+
 Внести зміни в об'єкт МП
     [Arguments]    ${username}    ${tender_uaid}    ${field_name}    ${field_value}
     Run keyword    biddingtime.Змінити ${field_name} об'єкта МП    ${username}    ${tender_uaid}    ${field_value}
+
+Внести зміни в лот
+    [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
+    Run keyword    biddingtime.Змінити ${fieldname} лоту    ${username}    ${tender_uaid}    ${field_value}
+
+Внести зміни в актив лоту
+    [Arguments]    ${username}    ${item_id}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
+    Run keyword    biddingtime.Змінити поле ${fieldname} активу лоту    ${field_value}
+
+Внести зміни в умови проведення аукціону
+    [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}    ${auction_index}
+    Run keyword    biddingtime.Змінити поле ${fieldname} аукціону ${auction_index}    ${field_value}
+
+
+
+
+
+
+Змінити поле quantity активу лоту
+    [Arguments]    ${field_value}
+    Click element    id=items-0-update-btn
+    ${field_value}=    Convert to string    ${field_value}
+    Input text    id=items-quantity    ${field_value}
+    Click element    id=save-btn
+
+Змінити поле value.amount аукціону 0
+    [Arguments]    ${field_value}
+    Click element    id=auction-0-update-btn
+    ${field_value}=    Convert to string    ${field_value}
+    Input text    id=lotauctions-minimalstep_amount    ${field_value}
+    Click element    id=save-btn
+
+Змінити поле guarantee.amount аукціону 0
+    [Arguments]    ${field_value}
+    Click element    id=auction-0-update-btn
+    ${field_value}=    Convert to string    ${field_value}
+    Input text    id=lotauctions-guarantee_amount    ${field_value}
+    Click element    id=save-btn
+
+Змінити поле registrationFee.amount аукціону 0
+    [Arguments]    ${field_value}
+    Click element    id=auction-0-update-btn
+    ${field_value}=    Convert to string    ${field_value}
+    Input text    id=lotauctions-registration_amount    ${field_value}
+    Click element    id=save-btn
+
+Змінити поле minimalStep.amount аукціону 0
+    [Arguments]    ${field_value}
+    Click element    id=auction-0-update-btn
+    ${field_value}=    Convert to string    ${field_value}
+    Input text    id=lotauctions-minimalstep_amount    ${field_value}
+    Click element    id=save-btn
+
+Змінити поле auctionPeriod.startDate аукціону 0
+    [Arguments]    ${field_value}
+    Click element    id=auction-0-update-btn
+    Input text    id=lotauctions-auctionperiod_startdate    ${field_value}
+    Click element    id=save-btn
+
+
+
+
+
+
+Змінити title лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${field_value}
+    Click element    id=update-btn
+    Input text    id=lots-title    ${field_value}
+    Click element    id=save-btn
+
+Змінити description лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${field_value}
+    Click element    id=update-btn
+    Input text    id=lots-description    ${field_value}
+    Click element    id=save-btn
 
 Змінити title об'єкта МП
     [Arguments]    ${username}    ${tender_uaid}    ${field_value}
@@ -382,7 +508,6 @@ Login
   ${value_amount}=    Convert To String    ${auction.value.amount}
   Input Text    id=lotauctions-value_amount    ${value_amount}
   ${value_valueaddedtaxincluded}=    Convert To String    ${auction.value.valueAddedTaxIncluded}
-  Run Keyword If    ${value_valueaddedtaxincluded} == True    Select Checkbox  id=lotauctions-minimalstep_valueaddedtaxincluded
   Run Keyword If    ${value_valueaddedtaxincluded} == True    Select Checkbox  id=lotauctions-value_valueaddedtaxincluded
   ${minimalStep}=    Convert To String    ${auction.minimalStep.amount}
   Input Text    id=lotauctions-minimalstep_amount    ${minimalStep}
@@ -400,126 +525,201 @@ Login
   Click element    id=save-btn
   Click element    id=verification-btn
 
+Отримати інформацію з активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}    ${field_name}
+    ${return_value}=    Run keyword     biddingtime.Отримати значення поля ${field_name} щодо активу лоту    ${username}    ${tender_uaid}    ${item_id}
+    [Return]    ${return_value}
+
 Отримати інформацію із лоту
     [Arguments]    ${username}    ${tender_uaid}    ${field_name}
-    Run keyword    biddingtime.Отримати інформацію про ${field_name} лоту    ${tender_uaid}
+    Run keyword    biddingtime.Оновити сторінку з лотом    ${username}    ${tender_uaid}
+    ${return_value}=    Run keyword    biddingtime.Отримати інформацію щодо лоту про ${field_name}
+    [Return]    ${return_value}
 
-Отримати інформацію про status лоту
-    [Arguments]    ${tender_uaid}
+Завантажити документ для видалення об'єкта МП
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}
+    Run keyword    biddingtime.Пошук об’єкта МП по ідентифікатору    ${username}    ${tender_uaid}
+    Click element    id=asset-upload-btn
+    Select from list by value    id=files-type    cancellationDetails
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Click element    id=upload-btn
+
+Видалити об'єкт МП
+    [Arguments]    ${username}    ${tender_uaid}
+    Click element    id=delete-btn
+    Confirm Action
+
+Завантажити документ для видалення лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}
+    Run keyword    biddingtime.Пошук лоту по ідентифікатору    ${username}    ${tender_uaid}
+    Click element    id=lot-upload-btn
+    Select from list by value    id=files-type    cancellationDetails
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Click element    id=upload-btn
+
+Видалити лот
+    [Arguments]    ${username}    ${tender_uaid}
+    Click element    id=delete-btn
+    Confirm Action
+
+Отримати інформацію щодо лоту про status
     ${return_value}=    Get text    id=lots-status
     [Return]    ${return_value}
 
-Отримати інформацію про lotID лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про dateModified
+    ${return_value}=    Get text    id=lots-datemodified
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про lotID
     ${return_value}=    Get text    id=lots-lotid
     [Return]    ${return_value}
 
-Отримати інформацію про date лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про date
     ${return_value}=    Get text    id=lots-date
     [Return]    ${return_value}
 
-Отримати інформацію про rectificationPeriod.endDate лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про rectificationPeriod.endDate
     ${return_value}=    Get text    id=lots-rectificationperiod_enddate
     [Return]    ${return_value}
 
-Отримати інформацію про assets лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про assets
     ${return_value}=    Get text    id=lots-assetid
     [Return]    ${return_value}
 
-Отримати інформацію про title лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про title
     ${return_value}=    Get text    id=lots-title
     [Return]    ${return_value}
 
-Отримати інформацію про title_ru лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про title_ru
     ${return_value}=    Get text    id=lots-title_ru
     [Return]    ${return_value}
 
-Отримати інформацію про title_en лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про title_en
     ${return_value}=    Get text    id=lots-title_en
     [Return]    ${return_value}
 
-Отримати інформацію про description лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про description
     ${return_value}=    Get text    id=lots-description
     [Return]    ${return_value}
 
-Отримати інформацію про lotHolder.name лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotHolder.name
     ${return_value}=    Get text    id=organizations-name
     [Return]    ${return_value}
 
-Отримати інформацію про lotHolder.identifier.scheme лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotHolder.identifier.scheme
     ${return_value}=    Get text    id=organizations-identifier_scheme
     [Return]    ${return_value}
 
-Отримати інформацію про lotHolder.identifier.id лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotHolder.identifier.id
     ${return_value}=    Get text    id=organizations-identifier_id
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.identifier.scheme лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.identifier.scheme
     ${return_value}=    Get text    id=custodian-identifier_scheme
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.identifier.id лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.identifier.id
     ${return_value}=    Get text    id=custodian-identifier_id
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.identifier.legalName лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.identifier.legalName
     ${return_value}=    Get text    id=custodian-identifier_legalName
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.contactPoint.name лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.contactPoint.name
     ${return_value}=    Get text    id=custodian-contactpoint_name
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.contactPoint.telephone лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.contactPoint.telephone
     ${return_value}=    Get text    id=custodian-contactpoint_telephone
     [Return]    ${return_value}
 
-Отримати інформацію про lotCustodian.contactPoint.email лоту
-    [Arguments]    ${tender_uaid}
+Отримати інформацію щодо лоту про lotCustodian.contactPoint.email
     ${return_value}=    Get text    id=custodian-contactpoint_email
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[0].decisionDate лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-0-decisionDate
+Отримати інформацію щодо лоту про decisions[${index}].decisionDate
+    ${return_value}=    Get text    id=decisions-${index}-decisionDate
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[0].decisionID лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-0-decisionID
+Отримати інформацію щодо лоту про decisions[${index}].decisionID
+    ${return_value}=    Get text    id=decisions-${index}-decisionID
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[0].title лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-0-title
+Отримати інформацію щодо лоту про decisions[${index}].title
+    ${return_value}=    Get text    id=decisions-${index}-title
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[1].decisionDate лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-1-decisionDate
+Отримати інформацію щодо лоту про auctions[${index}].procurementMethodType
+    ${return_value}=    Get text    id=auctions-${index}-procurementMethodType
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[1].decisionID лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-1-decisionID
+Отримати інформацію щодо лоту про auctions[${index}].status
+    ${return_value}=    Get text    id=auctions-${index}-status
     [Return]    ${return_value}
 
-Отримати інформацію про decisions[1].title лоту
-    [Arguments]    ${tender_uaid}
-    ${return_value}=    Get text    id=decisions-1-title
+Отримати інформацію щодо лоту про auctions[${index}].tenderAttempts
+    ${return_value}=    Get text    id=auctions-${index}-tenderAttempts
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].value.amount
+    ${return_value}=    Get text    id=auctions-${index}-value_amount
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].minimalStep.amount
+    ${return_value}=    Get text    id=auctions-${index}-minimalStep_amount
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].guarantee.amount
+    ${return_value}=    Get text    id=auctions-${index}-guarantee_amount
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].registrationFee.amount
+    ${return_value}=    Get text    id=auctions-${index}-registrationFee_amount
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].tenderingDuration
+    ${return_value}=    Get text    id=auctions-${index}-tenderingDuration
+    [Return]    ${return_value}
+
+Отримати інформацію щодо лоту про auctions[${index}].auctionPeriod.startDate
+    ${return_value}=    Get text    id=auctions-${index}-auctionPeriod_startDate
+    [Return]    ${return_value}
+
+Отримати значення поля description щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-description
+    [Return]    ${return_value}
+
+Отримати значення поля classification.scheme щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-classification_scheme
+    [Return]    ${return_value}
+
+Отримати значення поля classification.id щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-classification_id
+    [Return]    ${return_value}
+
+Отримати значення поля unit.name щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-unit_name
+    [Return]    ${return_value}
+
+Отримати значення поля quantity щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-quantity
+    ${return_value}=    Convert to number    ${return_value}
+    [Return]    ${return_value}
+
+Отримати значення поля registrationDetails.status щодо активу лоту
+    [Arguments]    ${username}    ${tender_uaid}    ${item_id}
+    ${return_value}=    Get text    id=items-${item_id}-registrationDetails_status
     [Return]    ${return_value}
