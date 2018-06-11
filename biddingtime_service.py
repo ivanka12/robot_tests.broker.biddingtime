@@ -15,4 +15,4 @@ def download_file(url, file_name, output_dir):
    urllib.urlretrieve(url, ('{}/{}'.format(output_dir, file_name)))
 
 def get_upload_file_path():
-   return os.path.join(os.getcwd(), 'src', 'robot_tests.broker.sets', 'LICENSE.txt')
+   return os.path.join(os.getcwd(), 'src', 'robot_tests.broker.biddingtime', 'LICENSE.txt')
