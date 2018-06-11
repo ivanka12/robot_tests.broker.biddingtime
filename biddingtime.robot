@@ -72,6 +72,7 @@ Login
     Input text    id=profile-email    ${tender_data.data.assetCustodian.contactPoint.email}
     Input text    id=profile-zkpo    ${tender_data.data.assetCustodian.identifier.id}
     Click element    id=save-btn
+    Sleep    2
 
     Wait Until Page Contains Element    id = cabinet
 
@@ -127,6 +128,7 @@ Login
     Input text    id=decisions-decisiondate    ${decisionDate}
     Input text    id=decisions-decisionid    ${decisionID}
     Click element    id=save-btn
+    Sleep    2
     Click element    id=activate-btn
     ${tender_uaid}=    Get text    id=lotID
     [Return]    ${tender_uaid}
@@ -151,19 +153,23 @@ Login
 
 Оновити сторінку з об'єктом МП
     [Arguments]    ${username}    ${tender_uaid}
-    Click element    id=publications
+    Sleep    2
     Click element    id=assets-list
     Input text    //input[@name="AssetsSearch[assetID]"]    ${tender_uaid}
     Click element    //input[@name="AssetsSearch[title]"]
     Click element    id=asset-view
+    Click element    id=refresh-btn
+    Sleep    2
 
 Оновити сторінку з лотом
     [Arguments]    ${username}    ${tender_uaid}
-    Click element    id=publications
+    Sleep    2
     Click element    id=lots-list
     Input text    //input[@name="LotsSearch[lotID]"]    ${tender_uaid}
     Click element    //input[@name="LotsSearch[title]"]
     Click element    id=lot-view
+    Click element    id=refresh-btn
+    Sleep    2
 
 Пошук лоту по ідентифікатору
     [Arguments]    ${username}    ${tender_uaid}
@@ -400,6 +406,7 @@ Login
     ${field_value}=    Convert to string    ${field_value}
     Input text    id=items-quantity    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити поле value.amount аукціону 0
     [Arguments]    ${field_value}
@@ -407,6 +414,7 @@ Login
     ${field_value}=    Convert to string    ${field_value}
     Input text    id=lotauctions-minimalstep_amount    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити поле guarantee.amount аукціону 0
     [Arguments]    ${field_value}
@@ -414,13 +422,15 @@ Login
     ${field_value}=    Convert to string    ${field_value}
     Input text    id=lotauctions-guarantee_amount    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити поле registrationFee.amount аукціону 0
     [Arguments]    ${field_value}
     Click element    id=auction-0-update-btn
     ${field_value}=    Convert to string    ${field_value}
-    Input text    id=lotauctions-registration_amount    ${field_value}
+    Input text    id=lotauctions-registrationfee_amount    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити поле minimalStep.amount аукціону 0
     [Arguments]    ${field_value}
@@ -428,12 +438,14 @@ Login
     ${field_value}=    Convert to string    ${field_value}
     Input text    id=lotauctions-minimalstep_amount    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити поле auctionPeriod.startDate аукціону 0
     [Arguments]    ${field_value}
     Click element    id=auction-0-update-btn
     Input text    id=lotauctions-auctionperiod_startdate    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 
 
@@ -445,12 +457,14 @@ Login
     Click element    id=update-btn
     Input text    id=lots-title    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити description лоту
     [Arguments]    ${username}    ${tender_uaid}    ${field_value}
     Click element    id=update-btn
     Input text    id=lots-description    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Змінити title об'єкта МП
     [Arguments]    ${username}    ${tender_uaid}    ${field_value}
@@ -477,6 +491,7 @@ Login
     ${field_value}=    Convert to string    ${field_value}
     Input text    id=items-quantity    ${field_value}
     Click element    id=save-btn
+    Sleep    2
 
 Отримати кількість активів в об'єкті МП
     [Arguments]    ${username}    ${tender_uaid}
@@ -532,7 +547,6 @@ Login
 
 Отримати інформацію із лоту
     [Arguments]    ${username}    ${tender_uaid}    ${field_name}
-    Run keyword    biddingtime.Оновити сторінку з лотом    ${username}    ${tender_uaid}
     ${return_value}=    Run keyword    biddingtime.Отримати інформацію щодо лоту про ${field_name}
     [Return]    ${return_value}
 
