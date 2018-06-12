@@ -159,7 +159,7 @@ Login
     Input text    //input[@name="AssetsSearch[assetID]"]    ${tender_uaid}
     Click element    //input[@name="AssetsSearch[title]"]
     Click element    id=asset-view
-    Click element    id=refresh-btn
+    Run keyword    biddingtime.Оновити дані
     Sleep    2
 
 Оновити сторінку з лотом
@@ -169,7 +169,7 @@ Login
     Input text    //input[@name="LotsSearch[lotID]"]    ${tender_uaid}
     Click element    //input[@name="LotsSearch[title]"]
     Click element    id=lot-view
-    Click element    id=refresh-btn
+    Run keyword    biddingtime.Оновити дані
     Sleep    2
 
 Пошук лоту по ідентифікатору
@@ -498,11 +498,10 @@ Login
 
 Отримати документ
     [Arguments]    ${username}    ${tender_uaid}    ${doc_id}
-    Run keyword    biddingtime.Оновити сторінку з об'єктом МП    ${username}    ${tender_uaid}
-    ${file_name}    Get Text    xpath=//*[contains(text(),'${doc_id}')]
-    ${url}    Get Element Attribute    xpath=//*[contains(text(),'${doc_id}')]@href
-    download_file    ${url}    ${file_name.split('/')[-1]}    ${OUTPUT_DIR}
-    [Return]    ${file_name.split('/')[-1]}
+    ${file_name}    Get Element Attribute    xpath=//a[contains(text(),'${doc_id}')]@name
+    ${url}    Get Element Attribute    xpath=//a[contains(text(),'${doc_id}')]@href
+    download_file    ${url}    ${file_name}    ${OUTPUT_DIR}
+    [Return]    ${file_name}
 
 Додати умови проведення аукціону
   [Arguments]  ${username}  ${auction}  ${index}  ${tender_uaid}
@@ -730,3 +729,6 @@ Login
     [Arguments]    ${username}    ${tender_uaid}    ${item_id}
     ${return_value}=    Get text    id=items-${item_id}-registrationDetails_status
     [Return]    ${return_value}
+
+Оновити дані
+    Click element    id=refresh-btn
