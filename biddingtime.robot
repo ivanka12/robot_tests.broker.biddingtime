@@ -412,7 +412,7 @@ Login
     [Arguments]    ${field_value}
     Click element    id=auction-0-update-btn
     ${field_value}=    Convert to string    ${field_value}
-    Input text    id=lotauctions-minimalstep_amount    ${field_value}
+    Input text    id=lotauctions-value_amount    ${field_value}
     Click element    id=save-btn
     Sleep    2
 
