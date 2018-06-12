@@ -109,7 +109,8 @@ Login
     Input text    id=organizations-address_region    ${assetHolder_address_region}
     Input text    id=organizations-address_streetaddress    ${assetHolder_address_streetAddress}
 
-    Click element    id = asset-save-btn
+    Click element    id=asset-save-btn
+    Sleep    3
     :FOR   ${index}   IN RANGE   ${items_length}
     \       Додати предмет    ${items[${index}]}
     Click element    id = asset-activate-btn
@@ -395,11 +396,6 @@ Login
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}    ${auction_index}
     Run keyword    biddingtime.Змінити поле ${fieldname} аукціону ${auction_index}    ${field_value}
 
-
-
-
-
-
 Змінити поле quantity активу лоту
     [Arguments]    ${field_value}
     Click element    id=items-0-update-btn
@@ -447,11 +443,6 @@ Login
     Click element    id=save-btn
     Sleep    2
 
-
-
-
-
-
 Змінити title лоту
     [Arguments]    ${username}    ${tender_uaid}    ${field_value}
     Click element    id=update-btn
@@ -472,6 +463,7 @@ Login
     Click element    id=asset-update-btn
     Input text    id=assets-title    ${field_value}
     Click element    id=asset-save-btn
+    Sleep    3
 
 Змінити description об'єкта МП
     [Arguments]    ${username}    ${tender_uaid}    ${field_value}
@@ -479,6 +471,7 @@ Login
     Click element    id=asset-update-btn
     Input text    id=assets-description    ${field_value}
     Click element    id=asset-save-btn
+    Sleep    3
 
 Внести зміни в актив об'єкта МП
     [Arguments]    ${username}    ${item_id}    ${tender_uaid}    ${field_name}    ${field_value}
