@@ -1,5 +1,5 @@
 robot_tests.broker.biddingtime
-==============================
+=======================
 
 |Join the chat at
 https://gitter.im/openprocurement/robot_tests.broker.biddingtime|
