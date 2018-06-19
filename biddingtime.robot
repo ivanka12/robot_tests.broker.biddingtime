@@ -509,6 +509,7 @@ Login
 
 Додати умови проведення аукціону номер 0
   [Arguments]  ${username}  ${tender_uaid}  ${auction}
+  Log    ${auction}
   biddingtime.Оновити сторінку з лотом    ${username}  ${tender_uaid}
   Click Element    id=auction-0-update-btn
   Input Text  id=lotauctions-auctionperiod_startdate    ${auction.auctionPeriod.startDate}
@@ -522,6 +523,16 @@ Login
   Input Text    id=lotauctions-guarantee_amount    ${guarantee_amount}
   ${registrationFee}=  Convert To String    ${auction.registrationFee.amount}
   Input Text    id=lotauctions-registrationfee_amount    ${registrationFee}
+
+  Input text    id=lotauctions-bankaccount_description    ${auction.bankAccount.bankName}
+  Input text    id=lotauctions-bankaccount_bankname    ${auction.bankAccount.description}
+  ${id}=    Convert to string    ${auction.bankAccount.accountIdentification[0].id}
+  ${scheme}=    Convert to string    ${auction.bankAccount.accountIdentification[0].scheme}
+  ${description}=    Convert to string    ${auction.bankAccount.accountIdentification[0].description}
+  Input text    id=lotauctions-bankaccount_accountidentification_id    ${id}
+  Input text    id=lotauctions-bankaccount_accountidentification_scheme    ${scheme}
+  Input text    id=lotauctions-bankaccount_accountidentification_description    ${description}
+
   Click element    id=save-btn
 
 Додати умови проведення аукціону номер 1
