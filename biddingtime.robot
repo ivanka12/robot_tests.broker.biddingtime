@@ -50,7 +50,6 @@ Login
     Input text    id=profile-member    ${data.name}
     Input text    id=profile-phone    ${data.contactPoint.telephone}
     Input text    id=profile-email    ${data.contactPoint.email}
-    # Input text    id=profile-zkpo    ${data.identifier.id}
     Натиснути    id=save-btn
     Sleep    2
 
@@ -128,7 +127,6 @@ Login
 
     Input text    id=organizations-name    ${assetHoldername}
     Input text    id=organizations-identifier_id    ${assetHolder_identifier_id}
-    # Select from list by value    id=organizations-identifier_scheme    ${assetHolder_identifier_scheme}
     Input text    id=organizations-identifier_legalname    ${assetHolder_identifier_legalName}
 
     Input text    id=organizations-contactpoint_email    ${assetHolder_ContactPoint_email}
