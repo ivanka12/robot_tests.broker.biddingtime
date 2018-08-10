@@ -1072,6 +1072,11 @@ biddingtime.Отримати інформацію з пропозиції шод
 Встановити дату підписання угоди
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${field_value}
     Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=contract-signed-btn
+    Input text    id=contracts-datesigned    ${field_value}
+    Натиснути    id=contract-signed-submit
+    Sleep    3
 
 Завантажити угоду до тендера
     [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${filepath}
