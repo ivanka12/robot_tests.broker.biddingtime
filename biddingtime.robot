@@ -128,7 +128,7 @@ Login
 
     Input text    id=organizations-name    ${assetHoldername}
     Input text    id=organizations-identifier_id    ${assetHolder_identifier_id}
-    Select from list by value    id=organizations-identifier_scheme    ${assetHolder_identifier_scheme}
+    # Select from list by value    id=organizations-identifier_scheme    ${assetHolder_identifier_scheme}
     Input text    id=organizations-identifier_legalname    ${assetHolder_identifier_legalName}
 
     Input text    id=organizations-contactpoint_email    ${assetHolder_ContactPoint_email}
@@ -176,14 +176,15 @@ Login
     Input text    id = items-description_en    ${item.description_en}
     Input text    id = items-quantity    ${quantity}
     Select from list by value    id = items-unit_code    ${item.unit.code}
-    Select from list by value    id = items-additionalclassifications    ${item.additionalClassifications[0].id}
     Input text    id = items-address_locality    ${item.address.locality}
     Input text    id = items-address_postalcode    ${item.address.postalCode}
     Select from list by value    id = items-address_region    ${item.address.region}
     Input text    id = items-address_streetaddress    ${item.address.streetAddress}
-    Input text    id = items-classification_id    ${item.classification.id}
+    Input text    id = search-c    ${item.classification.id}
+    Натиснути    //a[contains(text(), '${item.classification.id}') and contains(@class, 'jstree-search')]/*[1]
+    Sleep    1
 
-    Натиснути    id = save-btn
+    Неквапливо натиснути    id = save-btn
 
 Оновити дані
     Натиснути    id=refresh-btn
@@ -340,6 +341,7 @@ Login
 
 Отримати інформацію про items[${index}].quantity
     ${return_value}=    Отримати текст    id=items-${index}-quantity
+    ${return_value}=    Convert to number    ${return_value}
     [Return]    ${return_value}
 
 Отримати інформацію про items[${index}].registrationDetails.status
@@ -872,6 +874,10 @@ Login
     ${return_value}=    Отримати текст    id=items[${index}].unit_name
     [Return]    ${return_value}
 
+Отримати значення поля items[${index}].description тендеру
+    ${return_value}=    Отримати текст    id=items[${index}].description
+    [Return]    ${return_value}
+
 Отримати інформацію із запитання
     [Arguments]    ${username}    ${tender_uaid}    ${question_id}    ${field_name}
     Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
@@ -1019,7 +1025,6 @@ biddingtime.Отримати інформацію з пропозиції шод
     Choose file    id=files-file    ${filepath}
     Натиснути    id=document-upload-btn
 
-
 Змінити цінову пропозицію
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${field_value}
     Натиснути    id=bid-update-btn
@@ -1034,3 +1039,73 @@ biddingtime.Отримати інформацію з пропозиції шод
     Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     ${return_value}=    Отримати текст    id=auction-url
     [Return]    ${return_value}
+
+Завантажити протокол аукціону в авард
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${award_index}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=upload-protocol-btn
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Натиснути    id=bid-upload-protocol
+    Sleep    3
+
+Підтвердити постачальника
+    [Arguments]    ${username}    ${tender_uaid}    ${award_num}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=confirm-protocol-btn
+    Sleep    3
+
+Завантажити протокол дискваліфікації в авард
+    [Arguments]    ${username}    ${tender_uaid}    ${filename}    ${award_index}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=disqualify-link
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+
+Дискваліфікувати постачальника
+    [Arguments]    ${username}    ${tender_uaid}    ${award_index}    ${description}
+    Input text    id=awards-description    ${description}
+    Натиснути    id=upload-disqualification-btn
+    Sleep    3
+
+Встановити дату підписання угоди
+    [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${field_value}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+
+Завантажити угоду до тендера
+    [Arguments]    ${username}    ${tender_uaid}    ${contract_num}    ${filepath}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=upload-contract-link
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Натиснути    id=upload-contract-btn
+    Sleep    3
+
+Підтвердити підписання контракту
+    [Arguments]    ${username}    ${tender_uaid}    ${contract_num}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=contract-signed-btn
+    Натиснути    id=contract-signed-submit
+    Sleep    3
+
+Завантажити протокол скасування в контракт
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${contract_num}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=contract-upload-cancellation
+    ${filepath}    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Натиснути    id=upload-contract-btn
+    Sleep    3
+
+Скасувати контракт
+    [Arguments]    ${username}    ${tender_uaid}    ${contract_num}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=confirm-declining-contract
+    Sleep    3
