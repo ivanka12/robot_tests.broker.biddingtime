@@ -1048,6 +1048,22 @@ biddingtime.Отримати інформацію з пропозиції шод
     Натиснути    id=bid-upload-protocol
     Sleep    3
 
+Завантажити протокол погодження в авард
+    [Arguments]    ${username}    ${tender_uaid}    ${filepath}    ${award_index}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=upload-admission-btn
+    ${filepath}=    get_upload_file_path
+    Choose file    id=files-file    ${filepath}
+    Натиснути    id=bid-upload-admission
+    Sleep    3
+
+Активувати кваліфікацію учасника
+    [Arguments]    ${username}    ${tender_uaid}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[0]-link
+    Натиснути    id=confirm-admission-btn
+
 Підтвердити постачальника
     [Arguments]    ${username}    ${tender_uaid}    ${award_num}
     Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
@@ -1112,3 +1128,9 @@ biddingtime.Отримати інформацію з пропозиції шод
     Натиснути    id=bids[0]-link
     Натиснути    id=confirm-declining-contract
     Sleep    3
+
+Отримати кількість авардів в тендері
+    [Arguments]    ${username}    ${tender_uaid}
+    ${awards_count}=    Get text    id=awards-count
+    ${awards_count}=    Convert to number    ${awards_count}
+    [Return]    ${awards_count}
