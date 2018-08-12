@@ -1134,3 +1134,9 @@ biddingtime.Отримати інформацію з пропозиції шод
     ${awards_count}=    Get text    id=awards-count
     ${awards_count}=    Convert to number    ${awards_count}
     [Return]    ${awards_count}
+
+Скасування рішення кваліфікаційної комісії
+    [Arguments]    ${username}    ${tender_uaid}    ${award_num}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Натиснути    id=bids[1]-link
+    Натиснути    id=cancel-bid-btn
