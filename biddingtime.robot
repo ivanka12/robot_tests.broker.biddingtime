@@ -217,6 +217,7 @@ Login
 
 Отримати інформацію з активу в договорі
     [Arguments]    ${username}    ${contract_uaid}    ${item_id}    ${field_name}
+    Run keyword    biddingtime.Пошук тендера по ідентифікатору    ${username}    ${contract_uaid}
     ${return_value}=    Run Keyword    biddingtime.Отримати інформацію з активу ${item_id} контракту про ${field_name}
     [Return]    ${return_value}
 
